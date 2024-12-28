@@ -9,7 +9,8 @@ class User(Base):
     username: Mapped[str | None]
     first_name: Mapped[str | None]
     last_name: Mapped[str | None]
-    purchases: Mapped[list['Purchase']] = relationship('Purchase', back_populates='user', cascade='all, delete-orphan')
+    purchases: Mapped[list['Purchase']] = relationship(
+        'Purchase', back_populates='user', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<User(id={self.id}, telegram_id={self.telegram_id}, username="{self.username}")>'
@@ -17,7 +18,8 @@ class User(Base):
 
 class Category(Base):
     category_name: Mapped[str] = mapped_column(Text, nullable=False)
-    products: Mapped[list['Product']] = relationship('Product', back_populates='category', cascade='all, delete-orphan')
+    products: Mapped[list['Product']] = relationship(
+        'Product', back_populates='category', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<Category(id={self.id}, name="{self.category_name}")>'
@@ -30,7 +32,8 @@ class Product(Base):
     file_id: Mapped[str | None] = mapped_column(Text)
     category_id: Mapped[int] = mapped_column(ForeignKey('categories.id'))
     hidden_content: Mapped[int] = mapped_column(Text)
-    category: Mapped['Category'] = relationship('Category', back_populates='products')
+    category: Mapped['Category'] = relationship(
+        'Category', back_populates='products')
     purchases: Mapped[list['Purchase']] = relationship(
         'Purchase', back_populates='product', cascade='all, delete-orphan'
     )
@@ -39,13 +42,15 @@ class Product(Base):
         return f'<Product(id={self.id}, name="{self.name}", price={self.price})>'
 
 
-class Purchase(Base)
+class Purchase(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     product_id: Mapped[int] = mapped_column(ForeignKey('products.id'))
     price: Mapped[int]
     payment_id: Mapped[str] = mapped_column(unique=True)
-    user: Mapped['User'] = relationship('User', back_populates='purchases')
-    product: Mapped['Product'] = relationship('Product', back_populates='pur')
+    user: Mapped['User'] = relationship(
+        'User', back_populates='purchases')
+    product: Mapped['Product'] = relationship(
+        'Product', back_populates='pur')
 
     def __repr__(self):
         return f'<Purchase(id={self.id}, user_id={self.user_id},

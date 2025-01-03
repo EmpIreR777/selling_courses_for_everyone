@@ -5,7 +5,7 @@ from loguru import logger
 from bot.config import bot
 
 
-async def process_dell_next_msg(message: Message, state: FSMContext):
+async def process_dell_text_msg(message: Message, state: FSMContext):
     data = await state.get_data()
     last_msg_id = data.get('last_msg_id')
     try:

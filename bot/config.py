@@ -27,7 +27,7 @@ bot = Bot(token=settings.BOT_TOKEN,
         )
 
 dp = Dispatcher(storage=MemoryStorage())
-admins = settings.ADMIN_ID
+admin = settings.ADMIN_ID
 
 log_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log.txt')
 logger.add(log_file_path, format=settings.FORMAT_LOG,

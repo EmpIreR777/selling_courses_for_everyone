@@ -45,7 +45,7 @@
 
 ## Структура проекта
 
-```
+
 bot/
 ├── admin/                  # Код админ-панели
 ├── user/                   # Логика пользовательской части
@@ -59,7 +59,7 @@ requirements.txt            # Список зависимостей проект
 alembic/
 ├── versions/               # Скрипты миграций
 alembic.ini                 # Настройки Alembic
-```
+
 
 ## Установка и настройка
 
@@ -76,7 +76,7 @@ cd tg_pay_star
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # Для Unix/Linux
+source venv/bin/activate  # Для Linux
 
 # Для Windows:
 # .venv\Scripts\activate
@@ -92,12 +92,12 @@ pip install -r requirements.txt
 
 Создайте файл `.env` в корне проекта и добавьте следующие переменные:
 
-```
+
 BOT_TOKEN=ваш_токен_бота
 YUKASSA_TOKEN=ваш_тестовый_токен_юKassa
 ADMIN_ID=ваш_telegram_id
 DATABASE_URL=sqlite+aiosqlite:///data/database.db
-```
+
 
 **Описание переменных:**
 
@@ -165,21 +165,20 @@ python -m bot.main
 1. Форк данного репозитория.
 2. Создайте новую ветку для своей фичи или исправления:
 
-    ```bash
+```bash
     git checkout -b feature/ваша-ветка
-    ```
+```
 
 3. Внесите необходимые изменения и закоммитьте их:
 
-    ```bash
+```bash
     git commit -m "Описание изменений"
-    ```
+```
 
 4. Запушьте ветку в свой форк:
 
-    ```bash
+```bash
     git push origin feature/ваша-ветка
-    ```
+```
 
 5. Создайте Pull Request в оригинальный репозиторий и опишите свои изменения.
-```

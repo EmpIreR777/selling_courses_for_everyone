@@ -45,7 +45,7 @@
 
 ## Структура проекта
 
-
+```
 - bot/
  - admin/                  # Код админ-панели
  - user/                   # Логика пользовательской части
@@ -63,7 +63,7 @@
 
 ### Клонирование репозитория
 
-```bash
+```bash 
 git clone git@github.com:EmpIreR777/tg_pay_star.git
 cd tg_pay_star
 ```
@@ -75,9 +75,7 @@ cd tg_pay_star
 ```bash
 python -m venv venv
 source venv/bin/activate  # Для Linux
-
-# Для Windows:
-# .venv\Scripts\activate
+.venv\Scripts\activate # Для Windows
 ```
 
 Установите необходимые библиотеки из requirements.txt:
@@ -92,15 +90,14 @@ pip install -r requirements.txt
 
 
 BOT_TOKEN=ваш_токен_бота
-YUKASSA_TOKEN=ваш_тестовый_токен_юKassa
+PROVIDER_TOKEN=ваш_тестовый_токен_юKassa
 ADMIN_ID=ваш_telegram_id
-DATABASE_URL=sqlite+aiosqlite:///data/database.db
 
 
 **Описание переменных:**
 
 - `BOT_TOKEN` — токен вашего Telegram-бота, полученный через [BotFather](https://t.me/BotFather).
-- `YUKASSA_TOKEN` — тестовый токен платежной системы ЮKassa. Для боевого
+- `PROVIDER_TOKEN` — тестовый токен платежной системы ЮKassa. Для боевого
 использования получите соответствующий токен в личном кабинете ЮKassa.
 - `ADMIN_ID` — ваш Telegram ID, который будет иметь доступ к админ-панели бота.
 - `DATABASE_URL` — строка подключения к базе данных. В данном случае используется SQLite.

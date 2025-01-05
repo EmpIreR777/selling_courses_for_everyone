@@ -1,7 +1,7 @@
 import asyncio
 from aiogram.types import BotCommand, BotCommandScopeDefault
 from loguru import logger
-from bot.config import bot, admin, dp
+from bot.config import bot, admins, dp
 from bot.dao.database_middleware import DatabaseMiddlewareWithoutCommit, DatabaseMiddlewareWithCommit
 from bot.admin.admin import admin_router
 from bot.user.user_router import user_router
@@ -17,17 +17,18 @@ async def set_commands():
 # Функция, которая выполнится когда бот запустится
 async def start_bot():
     await set_commands()
-    try:
-        await bot.send_message(admin, f'Я запущен🥳.')
-    except:
-        pass
+    for admin_id in admins:
+        try:
+            await bot.send_message(admin_id, f'Я запущен🥳.')
+        except:
+            pass
     logger.info('Бот успешно запущен.')
 
 
 # Функция, которая выполнится когда бот завершит свою работу
 async def stop_bot():
     try:
-        for admin_id in admin:
+        for admin_id in admins:
             await bot.send_message(admin_id, 'Бот остановлен. За что?😔')
     except:
         pass

@@ -11,4 +11,4 @@ class ProductModel(BaseModel):
     price: int = Field(..., gt=0)
     category_id: int = Field(..., gt=0)
     file_id: str | None = None
-    hidden_context: str = Field(..., min_length=5)
+    hidden_content: str | None = Field(..., min_length=5)

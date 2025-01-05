@@ -91,7 +91,7 @@ pip install -r requirements.txt
 
 BOT_TOKEN=ваш_токен_бота
 PROVIDER_TOKEN=ваш_тестовый_токен_юKassa
-ADMIN_ID=ваш_telegram_id
+ADMIN_IDS=ваш_telegram_id
 
 
 **Описание переменных:**
@@ -99,7 +99,7 @@ ADMIN_ID=ваш_telegram_id
 - `BOT_TOKEN` — токен вашего Telegram-бота, полученный через [BotFather](https://t.me/BotFather).
 - `PROVIDER_TOKEN` — тестовый токен платежной системы ЮKassa. Для боевого
 использования получите соответствующий токен в личном кабинете ЮKassa.
-- `ADMIN_ID` — ваш Telegram ID, который будет иметь доступ к админ-панели бота.
+- `ADMIN_IDS` — ваш Telegram ID, который будет иметь доступ к админ-панели бота.
 - `DATABASE_URL` — строка подключения к базе данных. В данном случае используется SQLite.
 
 ### Инициализация базы данных

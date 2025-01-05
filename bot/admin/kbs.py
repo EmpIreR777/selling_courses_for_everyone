@@ -13,6 +13,14 @@ def catalog_admin_kb(catalog_data: List[Category]) -> InlineKeyboardMarkup:
     return kb.as_markup()
 
 
+def admin_del_yes_no_file_kb(product_id: int) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    kb.button(text='Да', callback_data=f'delete_confirm_{product_id}')
+    kb.button(text='Нет', callback_data='cancel_delete')
+    kb.adjust(2)
+    return kb.as_markup()
+
+
 def admin_send_file_kb() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.button(text='Без файла', callback_data='without_file')

@@ -3,11 +3,11 @@ from aiogram.enums import ContentType
 from aiogram.types import Message, CallbackQuery, LabeledPrice, PreCheckoutQuery
 from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from bot.config import bot, settings
 from bot.dao.dao import UserDAO, CategoryDao, ProductDao, PurchaseDao
 from bot.user.kbs import main_user_kb, catalog_kb, product_kb, get_product_buy_kb
 from bot.user.schemas import TelegramIDModel, ProductCategoryIDModel, PaymentData
+
 
 catalog_router = Router()
 
@@ -23,13 +23,11 @@ async def page_catalog(call: CallbackQuery, session_without_commit: AsyncSession
 
 
 @catalog_router.callback_query(F.data.startswith('category_'))
-async def page_catalog_products(
-    call: CallbackQuery, session_without_commit: AsyncSession):
+async def page_catalog_products(call: CallbackQuery, session_without_commit: AsyncSession):
     category_id = int(call.data.split('_')[-1])
     products_category = await ProductDao.find_all(
-        session=session_without_commit,
-        filters=ProductCategoryIDModel(category_id=category_id)
-    )
+        session=session_without_commit, 
+        filters=ProductCategoryIDModel(category_id=category_id))
     count_products = len(products_category)
     if count_products:
         await call.answer(f'В данной категории {count_products} товаров.')
@@ -87,26 +85,24 @@ async def successful_payment(message: Message, session_with_commit: AsyncSession
         'product_id': int(product_id)
     }
     # Добавляем информацию о покупке в базу данных
-    await PurchaseDao.add(session=session_with_commit,
-                           values=PaymentData(**payment_data))
-    product_data = await ProductDao.find_one_or_none_by_id(
-        session=session_with_commit, data_id=int(product_id))
+    await PurchaseDao.add(session=session_with_commit, values=PaymentData(**payment_data))
+    product_data = await ProductDao.find_one_or_none_by_id(session=session_with_commit, data_id=int(product_id))
 
     # Формируем уведомление администраторам
-    admin_id = settings.ADMIN_ID
-    try:
-        username = message.from_user.username
-        user_info = f'@{username} ({message.from_user.id})' if username else f'c ID {message.from_user.id}'
+    for admin_id in settings.ADMIN_IDS:
+        try:
+            username = message.from_user.username
+            user_info = f'@{username} ({message.from_user.id})' if username else f'c ID {message.from_user.id}'
 
-        await bot.send_message(
-            chat_id=admin_id,
-            text=(
-                f'💲 Пользователь {user_info} купил товар <b>{product_data.name}</b> (ID: {product_id}) '
-                f'за <b>{product_data.price} ₽</b>.'
+            await bot.send_message(
+                chat_id=admin_id,
+                text=(
+                    f'💲 Пользователь {user_info} купил товар <b>{product_data.name}</b> (ID: {product_id}) '
+                    f'за <b>{product_data.price} ₽</b>.'
+                )
             )
-        )
-    except Exception as e:
-        logger.error(f'Ошибка при отправке уведомления администраторам: {e}')
+        except Exception as e:
+            logger.error(f'Ошибка при отправке уведомления администраторам: {e}')
 
     # Подготавливаем текст для пользователя
     file_text = '📦 <b>Товар включает файл:</b>' if product_data.file_id else '📄 <b>Товар не включает файлы:</b>'

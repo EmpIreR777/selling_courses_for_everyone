@@ -46,7 +46,7 @@ class BaseDAO(Generic[T]):
                 logger.info(f"Запись не найдена по фильтрам: {filter_dict}")
             return record
         except SQLAlchemyError as e:
-            logger.error(f"Ошибка при поиске записи по фильтрам {filter_dict}: {e}")
+            logger.error(f'Ошибка при поиске записи по фильтрам {filter_dict}: {e}')
             raise
 
     @classmethod

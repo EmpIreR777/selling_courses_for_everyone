@@ -1,5 +1,5 @@
 from typing import List
-from aiogram.types import InlineKeyboardMarkup, ReplyKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, ReplyKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 from bot.config import settings
 from bot.dao.models import Category
@@ -34,9 +34,11 @@ def purchases_kb() -> InlineKeyboardMarkup:
     return kb.as_markup()
 
 
-def product_kb(product_id, price) -> InlineKeyboardMarkup:
+def product_kb(product_id, price, stars_price) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
-    kb.button(text='💸 Купить', callback_data=f'buy_{product_id}_{price}')
+    kb.button(text='💳 Оплатить ЮКасса', callback_data=f'buy_yukassa_{product_id}_{price}')
+    kb.button(text='💳 Оплатить Robocassa', callback_data=f'buy_robocassa_{product_id}_{price}')
+    kb.button(text='⭐ Оплатить звездами', callback_data=f'buy_stars_{product_id}_{stars_price}')
     kb.button(text='🛍 Назад', callback_data='catalog')
     kb.button(text='🏠 На главную', callback_data='home')
     kb.adjust(2)
@@ -46,5 +48,29 @@ def product_kb(product_id, price) -> InlineKeyboardMarkup:
 def get_product_buy_kb(price) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=f'Оплатить {price}₽', pay=True)],
+        [InlineKeyboardButton(text='Отменить', callback_data='home')]
+    ])
+
+
+def get_product_buy_youkassa(price) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=f'Оплатить {price}₽', pay=True)],
+        [InlineKeyboardButton(text='Отменить', callback_data='home')]
+    ])
+
+
+def get_product_buy_robocassa(price: int, payment_link: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(
+            text=f'Оплатить {price}₽',
+            web_app=WebAppInfo(url=payment_link)
+        )],
+        [InlineKeyboardButton(text='Отменить', callback_data='home')]
+    ])
+
+
+def get_product_buy_stars(price) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=f'Оплатить {price} ⭐', pay=True)],
         [InlineKeyboardButton(text='Отменить', callback_data='home')]
     ])
